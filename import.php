@@ -21,7 +21,7 @@ $tableClient = TableRestProxy::createTableService($connectionString);
 //   including \t \n \r
 // U+007F to U+009F
 //$handle = fopen('data/GameGenieCodes-snes.csv','r');
-if (($handle = fopen("test.csv", "r")) !== FALSE) {
+if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
     while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
         $num = count($import);
         echo "<p> $num fields in line $row: <br /></p>\n";
