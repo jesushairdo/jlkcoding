@@ -20,10 +20,18 @@ $tableClient = TableRestProxy::createTableService($connectionString);
 // U+0000 to U+001F
 //   including \t \n \r
 // U+007F to U+009F
-$handle = fopen('data/GameGenieCodes-snes.csv','r');
-
-
-$import = fgetcsv($handle, 0, ',','"');
+//$handle = fopen('data/GameGenieCodes-snes.csv','r');
+if (($handle = fopen("test.csv", "r")) !== FALSE) {
+    while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $num = count($import);
+        echo "<p> $num fields in line $row: <br /></p>\n";
+        $row++;
+        for ($c=0; $c < $num; $c++) {
+            echo $import[$c] . "<br />\n";
+        }
+    }
+    fclose($handle);
+}
 
 print_r($import);
 ?>
