@@ -6,7 +6,7 @@ use MicrosoftAzure\Storage\Table\Models\Entity;
 use MicrosoftAzure\Storage\Table\Models\EdmType;
 
 //Set connection String
-$connectionString = "DefaultEndpointsProtocol=[http|https];AccountName=jlkcoding;AccountKey=21rwyUroy2Es66UAMBeBu/9F1rvn0DGA6gsfo/1HgB9zG2XZWjDbsZVeDy5zDZJkIfZjDejdI1+5W+TfR1GHWw==";
+$connectionString = "DefaultEndpointsProtocol=httpd;AccountName=jlkcoding;AccountKey=21rwyUroy2Es66UAMBeBu/9F1rvn0DGA6gsfo/1HgB9zG2XZWjDbsZVeDy5zDZJkIfZjDejdI1+5W+TfR1GHWw==";
 
 // Create Table REST proxy.
 $tableClient = TableRestProxy::createTableService($connectionString);
