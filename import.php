@@ -18,9 +18,9 @@ $data = array();
 //Process file
 if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
     while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        $num = count($import);
-        echo '<p> '. $num .' fields in line '.$row.': <br /></p>'."\n";
-        $row++;
+        //$num = count($import);
+        //echo '<p> '. $num .' fields in line '.$row.': <br /></p>'."\n";
+        //$row++;
         //is this a comment or a code
         if (is_numeric($import[1]))
         {
