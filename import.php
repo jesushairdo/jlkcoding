@@ -19,7 +19,14 @@ if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
         echo '<p> '. $num .' fields in line '.$row.': <br /></p>'."\n";
         $row++;
         for ($c=0; $c < $num; $c++) {
-            echo cleanKeyValue($import[$c]) . '<br />'."\n";
+            if ($i == 0 )
+            {
+                echo cleanKeyValue($import[$c]) . '<br />'."\n";
+            }
+            else
+            {
+                echo $import[$c] . '<br />'."\n";
+            }
         }
     }
     fclose($handle);
