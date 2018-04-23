@@ -12,23 +12,31 @@ $connectionString = 'DefaultEndpointsProtocol=https;AccountName=jlkcoding;Accoun
 // Create Table REST proxy.
 $tableClient = TableRestProxy::createTableService($connectionString);
 
+//initiate the array
+$data = array();
+
 //Process file
 if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
     while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
         $num = count($import);
         echo '<p> '. $num .' fields in line '.$row.': <br /></p>'."\n";
         $row++;
-        for ($c=0; $c < $num; $c++) {
-            if ($c == 0 )
-            {
-                echo cleanKeyValue($import[$c]) . '<br />'."\n";
-            }
-            else
-            {
-                echo $import[$c] . '<br />'."\n";
-            }
+        //is this a comment or a code
+        if (is_numeric($import[1]))
+        {
+            //this is a game code
+            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['gameName'] = $import[0];
+            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['code'] = $import[2];
+            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['description'] = $import[3];
+            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['originalOrder'] = $import[5];
+        }
+        else
+        {
+            //this is a comment or header
+            $data[(cleanKeyValue($import[0]))]['comments'][] = $import[2];
         }
     }
     fclose($handle);
 }
+var_dump($data);
 ?>
