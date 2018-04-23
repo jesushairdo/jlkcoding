@@ -7,8 +7,11 @@ use MicrosoftAzure\Storage\Table\Models\Entity;
 use MicrosoftAzure\Storage\Table\Models\EdmType;
 use MicrosoftAzure\Storage\Table\Models\BatchOperations;
 
+$storageAccountName = getenv('TABLE_ACCOUNTNAME');
+$storageAccountKey = getenv('TABLE_KEY');
+
 //Set connection String
-$connectionString = 'DefaultEndpointsProtocol=https;AccountName=jlkcoding;AccountKey=21rwyUroy2Es66UAMBeBu/9F1rvn0DGA6gsfo/1HgB9zG2XZWjDbsZVeDy5zDZJkIfZjDejdI1+5W+TfR1GHWw==';
+$connectionString = 'DefaultEndpointsProtocol=https;AccountName='.$storageAccountName.';AccountKey='.$storageAccountKey;
 
 // Create Table REST proxy.
 $tableClient = TableRestProxy::createTableService($connectionString);
