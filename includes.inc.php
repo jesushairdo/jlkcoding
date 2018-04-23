@@ -13,8 +13,8 @@ function cleanKeyValue($valueToClean)
     //$stringsToClean[] = "/";
     //$stringsToClean[] = "\\";
     //$stringsToClean[] = "#";
-    $stringsToClean[] = '/[^a-zA-Z0-9]/';
+    $stringsToClean[] = '/[^a-zA-Z0-9!\-]/';
 
-    $cleanedValue = preg_replace($stringsToClean,'-',$valueToClean);
+    $cleanedValue = preg_replace($stringsToClean,'-',trim($valueToClean);
     return $cleanedValue;
 }
