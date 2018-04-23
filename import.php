@@ -25,10 +25,10 @@ if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
         if (is_numeric($import[1]))
         {
             //this is a game code
-            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['gameName'] = $import[0];
-            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['code'] = $import[2];
-            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['description'] = $import[3];
-            $data[(cleanKeyValue($import[0])]['codes'][($import[1])]['originalOrder'] = $import[5];
+            $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['gameName'] = $import[0];
+            $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['code'] = $import[2];
+            $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['description'] = $import[3];
+            $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['originalOrder'] = $import[5];
         }
         else
         {
