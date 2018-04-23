@@ -53,6 +53,7 @@ $ops = new BatchOperations();
 
 foreach ($data as $gameKey => $info)
 {
+    print '<!-- '.$gameKey.':'. print_r($info) .' -->'."\n\n";
     //loop through each game's codes
     foreach ($info['codes'] as $codeNumber => $codeInfo)
     {
