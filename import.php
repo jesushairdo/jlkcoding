@@ -5,6 +5,7 @@ use MicrosoftAzure\Storage\Table\TableRestProxy;
 use MicrosoftAzure\Storage\Common\ServiceException;
 use MicrosoftAzure\Storage\Table\Models\Entity;
 use MicrosoftAzure\Storage\Table\Models\EdmType;
+use MicrosoftAzure\Storage\Table\Models\BatchOperations;
 
 //Set connection String
 $connectionString = 'DefaultEndpointsProtocol=https;AccountName=jlkcoding;AccountKey=21rwyUroy2Es66UAMBeBu/9F1rvn0DGA6gsfo/1HgB9zG2XZWjDbsZVeDy5zDZJkIfZjDejdI1+5W+TfR1GHWw==';
@@ -47,25 +48,38 @@ print '<ul><li><strong>'. count($data) .'</strong> games</li>';
 print '<li><strong>'. $cheatCount .'</strong> cheats</li>';
 print '<li><strong>'. $commentCount .'</strong> comments</li></ul>';
 
-//import data into Azure Table Storage
-//just test with the 1st row of information
-$entity = new Entity();
-$entity->setPartitionKey("SNES");
-$entity->setRowKey(''. cleanKeyValue('AAAHH!!! Real Monsters') .'-1');
-$entity->addProperty("GameName", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['gameName']);
-$entity->addProperty("CheatNumber", EdmType::INT32, 1);
-$entity->addProperty("CheatComments", EdmType::STRING, "None");
-$entity->addProperty("Code", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['code']);
-$entity->addProperty("Description", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['description']);
+//import data into Azure Table Storage using a batch
+$ops = new BatchOperations();
 
+foreach ($data as $gameKey => $info)
+{
+    //loop through each game's codes
+    foreach ($info['codes'] as $codeNumber => $codeInfo)
+    {
+        //create entity
+        $entity = new Entity();
+        $entity->setPartitionKey("SNES");
+        $entity->setRowKey(''. $gameKey .'-'.$codeNumber);
+        $entity->addProperty("GameName", EdmType::STRING, $codeInfo['gameName']);
+        $entity->addProperty("CheatNumber", EdmType::INT32, $codeNumber);
+        $entity->addProperty("CheatComments", EdmType::STRING, "None");
+        $entity->addProperty("Code", EdmType::STRING, $codeInfo['code']);
+        $entity->addProperty("Description", EdmType::STRING, $codeInfo['description']);
+        //add entity to batch
+        $ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
+    }
+}
+
+//submit batch process
 try{
-    $tableClient->insertEntity("tblGenieCodes", $entity);
+    $tableClient->batch($ops);
 }
 catch(ServiceException $e){
     // Handle exception based on error codes and messages.
     // Error codes and messages are here:
     // https://docs.microsoft.com/rest/api/storageservices/Table-Service-Error-Codes
-    $code = $e->getCode();
+    $errorCode = $e->getCode();
     $error_message = $e->getMessage();
+    print $errorCode .': '. $error_message.'<br />';
 }
 ?>
