@@ -46,4 +46,26 @@ print '<p>The following was discovered</p>';
 print '<ul><li><strong>'. count($data) .'</strong> games</li>';
 print '<li><strong>'. $cheatCount .'</strong> cheats</li>';
 print '<li><strong>'. $commentCount .'</strong> comments</li></ul>';
+
+//import data into Azure Table Storage
+//just test with the 1st row of information
+$entity = new Entity();
+$entity->setPartitionKey("SNES");
+$entity->setRowKey(''. cleanKeyValue('AAAHH!!! Real Monsters') .'-1');
+$entity->addProperty("GameName", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['gameName']);
+$entity->addProperty("CheatNumber", EdmType::INT32, 1);
+$entity->addProperty("CheatComments", EdmType::STRING, "None");
+$entity->addProperty("Code", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['code']);
+$entity->addProperty("Description", EdmType::STRING, $data[(cleanKeyValue('AAAHH!!! Real Monsters'))]['codes'][1]['description']);
+
+try{
+    $tableClient->insertEntity("tblGenieCodes", $entity);
+}
+catch(ServiceException $e){
+    // Handle exception based on error codes and messages.
+    // Error codes and messages are here:
+    // https://docs.microsoft.com/rest/api/storageservices/Table-Service-Error-Codes
+    $code = $e->getCode();
+    $error_message = $e->getMessage();
+}
 ?>
