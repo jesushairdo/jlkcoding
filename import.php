@@ -73,7 +73,7 @@ foreach ($data as $gameKey => $info)
   
             //add entity to table (individually)
             try{
-                $tableClient->addInsertorReplaceEntity('tblGenieCodes', $entity);
+                $tableClient->addInsertOrReplaceEntity('tblGenieCodes', $entity);                
                 $entitiesInserted ++;
             }
             catch(ServiceException $e){
