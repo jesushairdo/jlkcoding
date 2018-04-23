@@ -14,7 +14,6 @@ $tableClient = TableRestProxy::createTableService($connectionString);
 //create filter
 $filter = "PartitionKey eq 'SNES'";
 $options = new QueryEntitiesOptions();
-$options->setTop(2000);
 $options->addSelectField('CheatNumber');
 $options->addSelectField('Code');
 $options->addSelectField('Description');
