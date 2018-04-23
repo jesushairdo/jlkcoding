@@ -15,6 +15,6 @@ function cleanKeyValue($valueToClean)
     //$stringsToClean[] = "#";
     $stringsToClean[] = '/[^a-zA-Z0-9!\-]/';
 
-    $cleanedValue = preg_replace($stringsToClean,'-',trim($valueToClean);
+    $cleanedValue = preg_replace($stringsToClean,'-',trim($valueToClean));
     return $cleanedValue;
 }
