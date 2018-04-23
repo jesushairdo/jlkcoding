@@ -53,7 +53,7 @@ $ops = new BatchOperations();
 
 foreach ($data as $gameKey => $info)
 {
-    print '<!-- '.$gameKey.':'. print_r($info) .' -->'."\n\n";
+    print '<!-- '.$gameKey.':'. print_r($info,true) .' -->'."\n\n";
     //loop through each game's codes
     foreach ($info['codes'] as $codeNumber => $codeInfo)
     {
@@ -70,7 +70,7 @@ foreach ($data as $gameKey => $info)
         $ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
     }
 }
-
+print '<!-- '. print_r($ops,true) .' -->';
 //submit batch process
 try{
     $tableClient->batch($ops);
