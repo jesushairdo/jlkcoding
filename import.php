@@ -53,24 +53,28 @@ $ops = new BatchOperations();
 
 foreach ($data as $gameKey => $info)
 {
-    print '<!-- '.$gameKey.':'. print_r($info,true) .' -->'."\n\n";
-    //loop through each game's codes
-    foreach ($info['codes'] as $codeNumber => $codeInfo)
+    //print '<!-- '.$gameKey.':'. print_r($info,true) .' -->'."\n\n";
+    //check that the game has codes
+    if (array_key_exists('codes',$info))
     {
-        //create entity
-        $entity = new Entity();
-        $entity->setPartitionKey("SNES");
-        $entity->setRowKey(''. $gameKey .'-'.$codeNumber);
-        $entity->addProperty("GameName", EdmType::STRING, $codeInfo['gameName']);
-        $entity->addProperty("CheatNumber", EdmType::INT32, $codeNumber);
-        $entity->addProperty("CheatComments", EdmType::STRING, "None");
-        $entity->addProperty("Code", EdmType::STRING, $codeInfo['code']);
-        $entity->addProperty("Description", EdmType::STRING, $codeInfo['description']);
-        //add entity to batch
-        $ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
+        //loop through each game's codes
+        foreach ($info['codes'] as $codeNumber => $codeInfo)
+        {
+            //create entity
+            $entity = new Entity();
+            $entity->setPartitionKey("SNES");
+            $entity->setRowKey(''. $gameKey .'-'.$codeNumber);
+            $entity->addProperty("GameName", EdmType::STRING, $codeInfo['gameName']);
+            $entity->addProperty("CheatNumber", EdmType::INT32, $codeNumber);
+            $entity->addProperty("CheatComments", EdmType::STRING, "None");
+            $entity->addProperty("Code", EdmType::STRING, $codeInfo['code']);
+            $entity->addProperty("Description", EdmType::STRING, $codeInfo['description']);
+            //add entity to batch
+            $ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
+        }
     }
 }
-print '<!-- '. print_r($ops,true) .' -->';
+//print '<!-- '. print_r($ops,true) .' -->';
 //submit batch process
 try{
     $tableClient->batch($ops);
