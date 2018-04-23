@@ -18,6 +18,7 @@ $data = array();
 $cheatCount = 0;
 $commentCount = 0;
 $lineCount = 0;
+$entitiesInserted = 0;
 //Process file
 if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
     while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -49,7 +50,7 @@ print '<li><strong>'. $cheatCount .'</strong> cheats</li>';
 print '<li><strong>'. $commentCount .'</strong> comments</li></ul>';
 
 //import data into Azure Table Storage using a batch
-$ops = new BatchOperations();
+//$ops = new BatchOperations();
 
 foreach ($data as $gameKey => $info)
 {
@@ -69,13 +70,29 @@ foreach ($data as $gameKey => $info)
             $entity->addProperty("CheatComments", EdmType::STRING, "None");
             $entity->addProperty("Code", EdmType::STRING, $codeInfo['code']);
             $entity->addProperty("Description", EdmType::STRING, $codeInfo['description']);
+  
+            //add entity to table (individually)
+            try{
+                $tableClient->addInsertorReplaceEntity('tblGenieCodes', $entity);
+                $entitiesInserted ++;
+            }
+            catch(ServiceException $e){
+                // Handle exception based on error codes and messages.
+                // Error codes and messages are here:
+                // https://docs.microsoft.com/rest/api/storageservices/Table-Service-Error-Codes
+                $errorCode = $e->getCode();
+                $error_message = $e->getMessage();
+                print $errorCode .': '. $error_message.'<br />';
+            }
+  
             //add entity to batch
-            $ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
+            //$ops->addInsertorReplaceEntity('tblGenieCodes', $entity);
         }
     }
 }
 //print '<!-- '. print_r($ops,true) .' -->';
 //submit batch process
+/*
 try{
     $tableClient->batch($ops);
 }
@@ -87,4 +104,6 @@ catch(ServiceException $e){
     $error_message = $e->getMessage();
     print $errorCode .': '. $error_message.'<br />';
 }
+*/
+print '<p><strong>'. $entitiesInserted.'</strong> codes have been inserted into storage</p>';
 ?>
