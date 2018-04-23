@@ -64,7 +64,7 @@ foreach ($data as $gameKey => $info)
             //create entity
             $entity = new Entity();
             $entity->setPartitionKey("SNES");
-            $entity->setRowKey(''. $gameKey .'-'.$codeNumber);
+            $entity->setRowKey(''. $gameKey .'-'.str_pad($codeNumber,6,0,STR_PAD_LEFT));
             $entity->addProperty("GameName", EdmType::STRING, $codeInfo['gameName']);
             $entity->addProperty("CheatNumber", EdmType::INT32, $codeNumber);
             $entity->addProperty("CheatComments", EdmType::STRING, "None");

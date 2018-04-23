@@ -18,3 +18,4 @@ function cleanKeyValue($valueToClean)
     $cleanedValue = preg_replace($stringsToClean,'-',trim($valueToClean));
     return $cleanedValue;
 }
+?>
