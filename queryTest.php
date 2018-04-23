@@ -20,7 +20,7 @@ $options->addSelectField('GameName');
 
 
 try {
-    $result = $tableClient->queryEntities('tblGenieCodes', $filter)
+    $result = $tableClient->queryEntities('tblGenieCodes', $filter);
 }
 catch(ServiceException $e) {
     // Handle exception based on error codes and messages
