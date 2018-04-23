@@ -14,14 +14,13 @@ $tableClient = TableRestProxy::createTableService($connectionString);
 
 //initiate the array
 $data = array();
-
+$cheatCount = 0;
+$commentCount = 0;
+$lineCount = 0;
 //Process file
 if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
     while (($import = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        //$num = count($import);
-        //echo '<p> '. $num .' fields in line '.$row.': <br /></p>'."\n";
-        //$row++;
-        //is this a comment or a code
+        //check to see if this a comment or a code
         if (is_numeric($import[1]))
         {
             //this is a game code
@@ -29,14 +28,22 @@ if (($handle = fopen('data/GameGenieCodes-snes.csv', 'r')) !== FALSE) {
             $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['code'] = $import[2];
             $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['description'] = $import[3];
             $data[(cleanKeyValue($import[0]))]['codes'][($import[1])]['originalOrder'] = $import[5];
+            $cheatCount ++;
         }
         else
         {
             //this is a comment or header
             $data[(cleanKeyValue($import[0]))]['comments'][] = $import[2];
+            $commentCount ++;
         }
+        $lineCount++;
     }
     fclose($handle);
 }
-var_dump($data);
+//output some information
+print '<p><strong>'. $lineCount .'</strong> lines processed</p>';
+print '<p>The following was discovered</p>';
+print '<ul><li><strong>'. count($data) .'</strong> games</li>';
+print '<li><strong>'. $cheatCount .'</strong> cheats</li>';
+print '<li><strong>'. $commentCount .'</strong> comments</li></ul>';
 ?>
