@@ -36,6 +36,7 @@ catch(ServiceException $e) {
 }
 
 $entities = $result->getEntities();
+echo $entities.count .' results found';
 $i=0;
 foreach ($entities as $entity){
     echo $entity->getPartitionKey().':'. $entity->getRowKey().':'. $entity->getProperty('CheatNumber')->getValue().':'.$entity->getProperty('Code')->getValue().':'.$entity->getProperty('Description')->getValue().':'.$entity->getProperty('GameName')->getValue().'<br />'."\n";
